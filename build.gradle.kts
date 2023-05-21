@@ -34,9 +34,12 @@ kotlin {
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     pluginName = properties("pluginName")
-    version = properties("platformVersion")
+//    version = properties("platformVersion")
     type = properties("platformType")
+    downloadSources.set(true)
+    updateSinceUntilBuild.set(true)
 
+    localPath = (properties("StudioRunPath")) //localPath 를 추가 해줘야 intellij가 아닌 Android Studio 가 열림
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins = properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) }
 }
@@ -63,6 +66,10 @@ kover.xmlReport {
 tasks {
     wrapper {
         gradleVersion = properties("gradleVersion").get()
+    }
+
+    instrumentCode {
+        compilerVersion.set("221.6008.13.2211.9619390") //현재 사용중인 Android Studio Version
     }
 
     patchPluginXml {
